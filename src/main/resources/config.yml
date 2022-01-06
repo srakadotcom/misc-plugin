@@ -1,0 +1,18 @@
+chat-format:
+  default: "&7{PLAYER} &8» &f{MESSAGE}"
+  vip: "&6[VIP] &8ₓ &7{PLAYER} &8» &f{MESSAGE}"
+  svip: "&2[SVIP] &8ₓ &7{PLAYER} &8» &f{MESSAGE}"
+  sponsor: "&1[SPONSOR] &8ₓ &7{PLAYER} &8» &f{MESSAGE}"
+  elita: "&d[ELITA] &8ₓ &7{PLAYER} &8» &f{MESSAGE}"
+  miner: "&e[MINER] &8ₓ &7{PLAYER} &8» &f{MESSAGE}"
+  thelper: "&b[TrialHelper] &8ₓ &7{PLAYER} &8» &f{MESSAGE}"
+  helper: "&b[Helper] &8ₓ &7{PLAYER} &8» &f{MESSAGE}"
+  mod: "&a[Moderator] &8ₓ &7{PLAYER} &8» &f{MESSAGE}"
+  jradmin: "&c[Jr. Admin] &8ₓ &7{PLAYER} &8» &f{MESSAGE}"
+  admin: "&c[Admin] &8ₓ &7{PLAYER} &8» &f{MESSAGE}"
+  headadmin: "&0[HeadAdmin] &8ₓ &7{PLAYER} &8» &f{MESSAGE}"
+  root: "&4[Właściciel] &8ₓ &7{PLAYER} &8» &6{MESSAGE}"
+
+messages:
+  automsg:
+    - "&6&lCashblock.eu &fStan konta sprawdzisz pod /ile"

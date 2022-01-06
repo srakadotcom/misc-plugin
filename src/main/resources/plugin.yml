@@ -1,0 +1,10 @@
+name: misc-plugin
+main: ru.rusekh.miscplugin.ToolsPlugin
+author: rusekh
+version: 1.0-SNAPSHOT
+depend:
+  - LuckPerms
+
+commands:
+  reloadcfg:
+    permission: miscplugin.reloadcfg
