@@ -32,15 +32,15 @@ public class RandomTeleportCommand extends BaseCommand
   @Default
   public boolean onCommand(@Optional CommandSender sender) {
     Player player = (Player) sender;
-    int x = RandomUtil.getRandomInt(-1000, 2000);
-    int z = RandomUtil.getRandomInt(-1000, 2000);
-    double y = player.getWorld().getHighestBlockYAt(x, z) + 1.5f;
-    Location location = new Location(player.getWorld(), x, y, z);
     Long lastMessage = cooldownChat.getIfPresent(player.getUniqueId());
     if (lastMessage != null && lastMessage >= System.currentTimeMillis()) {
       ChatUtil.sendMessage(player, "&4Błąd: &cNastępny raz randomowego tp możesz użyć za 120 sekund!");
       return false;
     }
+    int x = RandomUtil.getRandomInt(-1000, 2000);
+    int z = RandomUtil.getRandomInt(-1000, 2000);
+    double y = player.getWorld().getHighestBlockYAt(x, z) + 1.5f;
+    Location location = new Location(player.getWorld(), x, y, z);
     cooldownChat.put(player.getUniqueId(), System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(120L));
     toolsPlugin.getCacheMap().putIfAbsent(player.getUniqueId(), player.getLocation());
     player.teleport(location, TeleportCause.PLUGIN);

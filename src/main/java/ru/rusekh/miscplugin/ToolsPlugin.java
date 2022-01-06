@@ -33,12 +33,11 @@ import ru.rusekh.miscplugin.handler.PlayerChatHandler;
 import ru.rusekh.miscplugin.handler.PlayerInteractHandler;
 import ru.rusekh.miscplugin.handler.PlayerJoinHandler;
 import ru.rusekh.miscplugin.task.AutoMessageTask;
-import ru.rusekh.miscplugin.task.VanishTask;
 
 public class ToolsPlugin extends JavaPlugin
 {
   private final Map<UUID, UUID> teleportMap = new HashMap<>();
-  private final Map<UUID, Location> cacheMap = new HashMap<>();
+  private final Map<UUID, Location> cacheMap = new HashMap<>(); //mapa od back
   private static LuckPerms luckPermsApi;
 
   @Override
@@ -77,7 +76,6 @@ public class ToolsPlugin extends JavaPlugin
     paperCommandManager.registerCommand(new CustomRanksCommands(this));
 
     Bukkit.getScheduler().runTaskTimer(this, new AutoMessageTask(this), 20L, 800L);
-    Bukkit.getScheduler().runTaskTimer(this, new VanishTask(), 40L, 80L);
 
     Logger.getLogger("misc-plugin").info("Successfully loaded a miscelanous");
   }

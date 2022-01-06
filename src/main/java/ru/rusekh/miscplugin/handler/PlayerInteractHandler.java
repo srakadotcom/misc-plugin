@@ -1,5 +1,6 @@
 package ru.rusekh.miscplugin.handler;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
@@ -13,6 +14,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.material.Button;
 import ru.rusekh.miscplugin.manager.RegionManager;
 
 public class PlayerInteractHandler implements Listener
@@ -44,10 +46,17 @@ public class PlayerInteractHandler implements Listener
 
   @EventHandler
   private void interact(PlayerInteractEvent event) {
-    if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.ENCHANTMENT_TABLE) {
+    if (event.getClickedBlock() == null) return;
+    if (event.getClickedBlock().getType() == Material.STONE_BUTTON) {
+      Button button = (Button) event.getClickedBlock().getState().getData();
+      Block rtpBlock = event.getClickedBlock().getRelative(button.getAttachedFace());
+      if (rtpBlock.getType() != Material.NOTE_BLOCK) return;
+      Bukkit.dispatchCommand(event.getPlayer(), "rtp");
+    }
+    if (event.getClickedBlock().getType() == Material.ENCHANTMENT_TABLE) {
       event.setCancelled(false);
     }
-    if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.ANVIL) {
+    if (event.getClickedBlock().getType() == Material.ANVIL) {
       event.setCancelled(false);
     }
   }

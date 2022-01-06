@@ -35,10 +35,10 @@ public class KeyCommand extends BaseCommand
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "cc giveall p legendarna " + args[1]);
         Bukkit.getOnlinePlayers().forEach(player1 -> ChatUtil.sendMessage(player1, "&7Cały serwer otrzymał &6&lLegendarny &7Klucz &8x&f" + args[1]));
         break;
-      case "pospolita":
+      case "zwykla":
         if (args.length != 2) return;
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "cc giveall p pospolita " + args[1]);
-        Bukkit.getOnlinePlayers().forEach(player1 -> ChatUtil.sendMessage(player1, "&7Cały serwer otrzymał &2&lPospolita &7Klucz &8x&f" + args[1]));
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "cc giveall p zwykla " + args[1]);
+        Bukkit.getOnlinePlayers().forEach(player1 -> ChatUtil.sendMessage(player1, "&7Cały serwer otrzymał &2&lZwykły &7Klucz &8x&f" + args[1]));
         break;
       case "rzadka":
         if (args.length != 2) return;
@@ -46,7 +46,7 @@ public class KeyCommand extends BaseCommand
         Bukkit.getOnlinePlayers().forEach(player1 -> ChatUtil.sendMessage(player1, "&7Cały serwer otrzymał &b&lRzadki &7Klucz &8x&f" + args[1]));
         break;
       default:
-        ChatUtil.sendMessage(player, "&7Poprawne użycie: &f/klucz <epicka|legendarna|pospolita|rzadka> <ilośc>");
+        ChatUtil.sendMessage(player, "&7Poprawne użycie: &f/klucz <epicka|legendarna|zwykla|rzadka> <ilośc>");
         break;
     }
   }

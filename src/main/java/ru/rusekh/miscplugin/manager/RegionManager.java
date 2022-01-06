@@ -27,7 +27,7 @@ public class RegionManager
       Location location = block.getLocation();
       if (isSpawnRegion(location)) {
         if (block.getType() == Material.ENCHANTMENT_TABLE) return false;
-          ChatUtil.sendMessage(player, "&4Błąd: &cNie możesz niszczyć na terenie!");
+        ChatUtil.sendMessage(player, "&4Błąd: &cNie możesz niszczyć na terenie!");
         return true;
       }
     }

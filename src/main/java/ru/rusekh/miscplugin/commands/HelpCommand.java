@@ -12,10 +12,9 @@ public class HelpCommand extends BaseCommand
 {
   @Default
   public void onCommand(@Optional CommandSender sender) {
-    ChatUtil.sendMessage(sender, "&8* &7/dzialki &8- &fPomoc odnośnie działek");
     ChatUtil.sendMessage(sender, "&8* &7/wyplac &8- &fInformacje odnośnie wypłacania kasy");
-    ChatUtil.sendMessage(sender, "&8* &7/ile &8- &fAktualny stan twojego konta");
-    ChatUtil.sendMessage(sender, "&8* &7/tophajsu &8- &fTopka hajsu");
+    ChatUtil.sendMessage(sender, "&8* &7/hajs &8- &fAktualny stan twojego konta");
+    ChatUtil.sendMessage(sender, "&8* &7/topki &8- &fTopka hajsu");
     ChatUtil.sendMessage(sender, "&8* &7/rtp &8- &fRandomowa teleportacja");
     ChatUtil.sendMessage(sender, "&8* &7/kit &8- &fZestawy dla rang");
     ChatUtil.sendMessage(sender, "&8* &7/rangi &8- &fLista dostępnych rang");
