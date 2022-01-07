@@ -30,8 +30,12 @@ public class HelpopCommand extends BaseCommand
       ChatUtil.sendMessage(player, "&4Błąd: &cNastępną wiadomość możesz wysłać za 30 sekund!");
       return;
     }
-    helpopMap.put(player.getUniqueId(), System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(30L));
     String msg = StringUtils.join(args, " ", 0, args.length);
+    if (msg.isEmpty()) {
+      ChatUtil.sendMessage(player, "&4Błąd: &cTwoja wiadomość nie może być pusta!");
+      return;
+    }
+    helpopMap.put(player.getUniqueId(), System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(30L));
     ChatUtil.sendMessage(player, "&aWysłałes wiadomość na helpop!");
     Bukkit.getOnlinePlayers().stream().filter(player1 -> player1.hasPermission("miscplugin.helpop")).forEach(player1 -> ChatUtil.sendMessage(player1, "&4[HelpOP] + &7"+ player.getName() + "&8: &f" + msg));
   }

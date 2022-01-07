@@ -29,3 +29,31 @@ messages:
     - "&8&m»                       «\n
        &8● &aInformacja &8●\n
        &7Aktualna granica mapy wynosi &e2200x2200 kratek"
+
+shopSell:
+  '1':
+    title: "DIAMENT"
+    cost: 3.2
+    type: DIAMOND
+    items: DIAMOND
+    commands: "say elo jestem kurwom"
+  '2':
+    title: "ZŁOTO"
+    cost: 5.5
+    type: GOLD_INGOT
+    items: GOLD_INGOT
+    commands: "say elo jestem kurwom"
+
+shopBuy:
+  '1':
+    title: "DIAMENT"
+    cost: 3.2
+    type: DIAMOND
+    items: DIAMOND
+    commands: "say elo jestem kurwom"
+  '2':
+    title: "ZŁOTO"
+    cost: 5.5
+    type: GOLD_INGOT
+    items: GOLD_INGOT
+    commands: "say elo jestem kurwom"

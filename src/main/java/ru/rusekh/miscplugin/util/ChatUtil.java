@@ -1,7 +1,6 @@
 package ru.rusekh.miscplugin.util;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -12,12 +11,12 @@ public class ChatUtil {
   }
 
   public static String color(final String message) {
-    return ChatColor.translateAlternateColorCodes('&', message);
+    return ChatColor.translateAlternateColorCodes('&', message.replace(">>", "»"));
   }
 
   public static List<String> color(final List<String> message) {
     return message.stream()
         .map(ChatUtil::color)
-        .collect(Collectors.toList());
+        .toList();
   }
 }

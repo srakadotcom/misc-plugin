@@ -11,7 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import ru.rusekh.miscplugin.manager.VanishManager;
 
-@CommandAlias("vanish")
+@CommandAlias("vanish|v")
 @CommandPermission("miscplugin.vanish")
 public class VanishCommand extends BaseCommand
 {

@@ -24,30 +24,36 @@ public class KeyCommand extends BaseCommand
       return;
     }
     switch (args[0]) {
-      case "epicka": {
-        if (args.length != 2) return;
+      case "epicka" -> {
+        if (args.length != 2)
+          return;
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "cc giveall p epicka " + args[1]);
-        Bukkit.getOnlinePlayers().forEach(player1 -> ChatUtil.sendMessage(player1, "&7Cały serwer otrzymał &d&lEpicki &7Klucz &8x&f" + args[1]));
-        break;
+        Bukkit.getOnlinePlayers().forEach(player1 -> ChatUtil
+            .sendMessage(player1, "&7Cały serwer otrzymał &d&lEpicki &7Klucz &8x&f" + args[1]));
       }
-      case "legendarna":
-        if (args.length != 2) return;
+      case "legendarna" -> {
+        if (args.length != 2)
+          return;
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "cc giveall p legendarna " + args[1]);
-        Bukkit.getOnlinePlayers().forEach(player1 -> ChatUtil.sendMessage(player1, "&7Cały serwer otrzymał &6&lLegendarny &7Klucz &8x&f" + args[1]));
-        break;
-      case "zwykla":
-        if (args.length != 2) return;
+        Bukkit.getOnlinePlayers().forEach(player1 -> ChatUtil
+            .sendMessage(player1, "&7Cały serwer otrzymał &6&lLegendarny &7Klucz &8x&f" + args[1]));
+      }
+      case "zwykla" -> {
+        if (args.length != 2)
+          return;
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "cc giveall p zwykla " + args[1]);
-        Bukkit.getOnlinePlayers().forEach(player1 -> ChatUtil.sendMessage(player1, "&7Cały serwer otrzymał &2&lZwykły &7Klucz &8x&f" + args[1]));
-        break;
-      case "rzadka":
-        if (args.length != 2) return;
+        Bukkit.getOnlinePlayers().forEach(player1 -> ChatUtil
+            .sendMessage(player1, "&7Cały serwer otrzymał &2&lZwykły &7Klucz &8x&f" + args[1]));
+      }
+      case "rzadka" -> {
+        if (args.length != 2)
+          return;
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "cc giveall p rzadka " + args[1]);
-        Bukkit.getOnlinePlayers().forEach(player1 -> ChatUtil.sendMessage(player1, "&7Cały serwer otrzymał &b&lRzadki &7Klucz &8x&f" + args[1]));
-        break;
-      default:
-        ChatUtil.sendMessage(player, "&7Poprawne użycie: &f/klucz <epicka|legendarna|zwykla|rzadka> <ilośc>");
-        break;
+        Bukkit.getOnlinePlayers().forEach(player1 -> ChatUtil
+            .sendMessage(player1, "&7Cały serwer otrzymał &b&lRzadki &7Klucz &8x&f" + args[1]));
+      }
+      default -> ChatUtil.sendMessage(player,
+          "&7Poprawne użycie: &f/klucz <epicka|legendarna|zwykla|rzadka> <ilośc>");
     }
   }
 }

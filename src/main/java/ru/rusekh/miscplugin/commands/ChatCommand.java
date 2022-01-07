@@ -15,7 +15,7 @@ import ru.rusekh.miscplugin.util.ChatUtil;
 @CommandPermission("miscplugin.clear")
 public class ChatCommand extends BaseCommand
 {
-  public static boolean chatStatus;
+  public static boolean chatStatus = true;
 
   @Default
   @CommandCompletion("on|off|clear")
