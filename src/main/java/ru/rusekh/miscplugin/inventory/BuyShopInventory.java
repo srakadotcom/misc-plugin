@@ -1,15 +1,19 @@
 package ru.rusekh.miscplugin.inventory;
 
+import net.milkbowl.vault.economy.EconomyResponse;
+import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import ru.rusekh.miscplugin.ToolsPlugin;
 import ru.rusekh.miscplugin.object.Shop;
 import ru.rusekh.miscplugin.util.ItemBuilder;
 
-public class BuyShopInventory
-{
+public class BuyShopInventory implements ClickableInventory {
+
   private final ToolsPlugin toolsPlugin;
 
   public BuyShopInventory(ToolsPlugin toolsPlugin) {
@@ -17,7 +21,7 @@ public class BuyShopInventory
   }
 
   public void openInventory(Player player) {
-    Inventory inventory = Bukkit.createInventory(null, 54, "Kupno");
+    Inventory inventory = Bukkit.createInventory(this, 54, "Kupno");
 
     for (Shop shop : toolsPlugin.getShopManager().getShopBuy()) {
       ItemStack shopBuy =
@@ -29,5 +33,23 @@ public class BuyShopInventory
     }
 
     player.openInventory(inventory);
+  }
+
+  @Override
+  public void handleClick(InventoryClickEvent event) {
+    Player player = (Player) event.getWhoClicked();
+    if (event.getRawSlot() >= toolsPlugin.getShopManager().getShopBuy().size()) {
+      return;
+    }
+
+    Shop shop = toolsPlugin.getShopManager().getShopBuy().get(event.getRawSlot());
+
+    EconomyResponse response = toolsPlugin.getEconomy().withdrawPlayer(player, shop.getCost());
+    if (response.type == ResponseType.FAILURE) {
+      player.sendMessage(ChatColor.RED + "Transakcja nieudana: " + response.errorMessage);
+    } else {
+      shop.execute(player);
+      player.sendMessage(ChatColor.GREEN + "Pomyslnie zakupiles przedmiot!");
+    }
   }
 }

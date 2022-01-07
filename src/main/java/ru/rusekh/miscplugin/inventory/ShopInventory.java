@@ -1,22 +1,30 @@
 package ru.rusekh.miscplugin.inventory;
 
 import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import ru.rusekh.miscplugin.ToolsPlugin;
 import ru.rusekh.miscplugin.util.ItemBuilder;
 
-public class ShopInventory
-{
-  public static void openInventory(Player player) {
-    Inventory inventory = Bukkit.createInventory(null, 27, "Menu sklepu");
+public class ShopInventory implements ClickableInventory {
+  private final ToolsPlugin plugin;
 
-    ItemStack sellShop = new ItemBuilder(Material.HARD_CLAY, 1, (short)5)
+  public ShopInventory(ToolsPlugin plugin) {
+    this.plugin = plugin;
+  }
+
+  public void openInventory(Player player) {
+    Inventory inventory = Bukkit.createInventory(this, 27, "Menu sklepu");
+
+    ItemStack sellShop = new ItemBuilder(Material.HARD_CLAY, 1, DyeColor.LIME.getWoolData())
         .setName("&cSprzedaż przedmiotów")
         .build();
 
-    ItemStack buyShop = new ItemBuilder(Material.HARD_CLAY, 1, (short)14)
+    ItemStack buyShop = new ItemBuilder(Material.HARD_CLAY, 1, DyeColor.RED.getWoolData())
         .setName("&aKupno przedmiotów")
         .build();
 
@@ -24,5 +32,17 @@ public class ShopInventory
     inventory.setItem(14, sellShop);
 
     player.openInventory(inventory);
+  }
+
+
+  @Override
+  public void handleClick(InventoryClickEvent event) {
+    Player player = (Player)event.getWhoClicked();
+    event.setCancelled(true);
+    switch (event.getSlot()) {
+      case 10 -> new BuyShopInventory(plugin).openInventory(player);
+      case 14 -> new SellShopInventory(plugin).openInventory(player);
+      default -> event.getWhoClicked().closeInventory();
+    }
   }
 }

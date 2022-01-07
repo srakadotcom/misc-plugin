@@ -13,7 +13,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.rusekh.miscplugin.commands.ChatCommand;
-import ru.rusekh.miscplugin.commands.ClearCommand;
 import ru.rusekh.miscplugin.commands.CustomRanksCommands;
 import ru.rusekh.miscplugin.commands.EnderChestCommand;
 import ru.rusekh.miscplugin.commands.FlyCommand;
@@ -35,9 +34,6 @@ import ru.rusekh.miscplugin.handler.InventoryClickListener;
 import ru.rusekh.miscplugin.handler.PlayerChatHandler;
 import ru.rusekh.miscplugin.handler.PlayerInteractHandler;
 import ru.rusekh.miscplugin.handler.PlayerJoinHandler;
-import ru.rusekh.miscplugin.inventory.BuyShopInventory;
-import ru.rusekh.miscplugin.inventory.SellShopInventory;
-import ru.rusekh.miscplugin.inventory.ShopInventory;
 import ru.rusekh.miscplugin.manager.ShopManager;
 import ru.rusekh.miscplugin.task.AutoMessageTask;
 
@@ -47,8 +43,6 @@ public class ToolsPlugin extends JavaPlugin
   private final Map<UUID, Location> cacheMap = new HashMap<>(); //mapa od back
   private static LuckPerms luckPermsApi;
   private ShopManager shopManager;
-  private SellShopInventory sellShopInventory;
-  private BuyShopInventory buyShopInventory;
   private Economy economy;
 
   @Override
@@ -70,14 +64,12 @@ public class ToolsPlugin extends JavaPlugin
     }
 
     shopManager = new ShopManager(this);
-    sellShopInventory = new SellShopInventory(this);
-    buyShopInventory = new BuyShopInventory(this);
 
     PluginManager pluginManager = Bukkit.getPluginManager();
     pluginManager.registerEvents(new PlayerInteractHandler(), this);
     pluginManager.registerEvents(new PlayerJoinHandler(), this);
     pluginManager.registerEvents(new PlayerChatHandler(this), this);
-    pluginManager.registerEvents(new InventoryClickListener(this), this);
+    pluginManager.registerEvents(new InventoryClickListener(), this);
 
 
     getCommand("reloadcfg").setExecutor(new ReloadCfgCommand(this));
@@ -100,7 +92,7 @@ public class ToolsPlugin extends JavaPlugin
     paperCommandManager.registerCommand(new HelpCommand());
     paperCommandManager.registerCommand(new KeyCommand());
     paperCommandManager.registerCommand(new CustomRanksCommands(this));
-    paperCommandManager.registerCommand(new ShopCommand());
+    paperCommandManager.registerCommand(new ShopCommand(this));
 
     Bukkit.getScheduler().runTaskTimer(this, new AutoMessageTask(this), 20L, 800L);
 
@@ -121,14 +113,6 @@ public class ToolsPlugin extends JavaPlugin
 
   public ShopManager getShopManager() {
     return shopManager;
-  }
-
-  public SellShopInventory getSellShopInventory() {
-    return sellShopInventory;
-  }
-
-  public BuyShopInventory getBuyShopInventory() {
-    return buyShopInventory;
   }
 
   public Economy getEconomy() {

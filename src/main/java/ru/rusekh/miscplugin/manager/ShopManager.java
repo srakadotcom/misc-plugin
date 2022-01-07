@@ -13,8 +13,8 @@ import ru.rusekh.miscplugin.object.Shop;
 
 public class ShopManager
 {
-  private final Set<Shop> shopSell = new HashSet<>();
-  private final Set<Shop> shopBuy = new HashSet<>();
+  private final List<Shop> shopSell = new ArrayList<>();
+  private final List<Shop> shopBuy = new ArrayList<>();
 
   public ShopManager(ToolsPlugin toolsPlugin) {
     for (String string : toolsPlugin.getConfig().getConfigurationSection("shopSell").getKeys(false)) {
@@ -37,11 +37,11 @@ public class ShopManager
     }
   }
 
-  public Set<Shop> getShopSell() {
+  public List<Shop> getShopSell() {
     return shopSell;
   }
 
-  public Set<Shop> getShopBuy() {
+  public List<Shop> getShopBuy() {
     return shopBuy;
   }
 }
