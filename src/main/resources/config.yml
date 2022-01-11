@@ -32,28 +32,125 @@ messages:
 
 shopSell:
   '1':
-    title: "DIAMENT"
-    cost: 3.2
-    type: DIAMOND
-    items: DIAMOND
-    commands: "say elo jestem kurwom"
+    title: "64x cobbla"
+    cost: 0.01
+    type: COBBLESTONE
+    items: "COBBLESTONE 64"
+    commands: []
   '2':
-    title: "ZŁOTO"
-    cost: 5.5
-    type: GOLD_INGOT
-    items: GOLD_INGOT
-    commands: "say elo jestem kurwom"
+    title: "64x redstone"
+    cost: 0.50
+    type: REDSTONE
+    items: "REDSTONE 64"
+    commands: []
+  '3':
+    title: "64x lazuryt"
+    cost: 1
+    type: "INK_SACK:4"
+    items: "INK_SACK:4 64"
+    commands: []
+  '4':
+    title: "4x diamenty"
+    cost: 2
+    type: "DIAMOND"
+    items: "DIAMOND 4"
+    commands: []
+  '5':
+    title: "2x szmaragdy"
+    cost: 2
+    type: "EMERALD"
+    items: "EMERALD 2"
+    commands: []
+  '6':
+    title: "64x żelazo"
+    cost: 0.25
+    type: "IRON_INGOT"
+    items: "IRON_INGOT 64"
+    commands: []
+  '7':
+    title: "64x złota"
+    cost: 0.25
+    type: "GOLD_INGOT"
+    items: "GOLD_INGOT 64"
+    commands: []
+  '8':
+    title: "64x ziemii"
+    cost: 0.02
+    type: "DIRT"
+    items: "DIRT 64"
+    commands: []
+  '9':
+    title: "4x obsydianu"
+    cost: 1
+    type: "OBSIDIAN"
+    items: "OBSIDIAN 4"
+    commands: []
+  '10':
+    title: "8x deski"
+    cost: 0.05
+    type: "WOOD"
+    items: "WOOD 8"
+    commands: []
+# todo: klucze
 
 shopBuy:
   '1':
-    title: "DIAMENT"
-    cost: 3.2
-    type: DIAMOND
-    items: DIAMOND
-    commands: "say elo jestem kurwom"
+    title: "64x cobbla"
+    cost: 0.02
+    type: COBBLESTONE
+    items: "COBBLESTONE 64"
+    commands: []
   '2':
-    title: "ZŁOTO"
-    cost: 5.5
-    type: GOLD_INGOT
-    items: GOLD_INGOT
-    commands: "say elo jestem kurwom"
+    title: "64x redstone"
+    cost: 1
+    type: REDSTONE
+    items: "REDSTONE 64"
+    commands: []
+  '3':
+    title: "64x lazuryt"
+    cost: 2
+    type: "INK_SACK:4"
+    items: "INK_SACK:4 64"
+    commands: []
+  '4':
+    title: "4x diamenty"
+    cost: 4
+    type: "DIAMOND"
+    items: "DIAMOND 4"
+    commands: []
+  '5':
+    title: "2x szmaragdy"
+    cost: 4
+    type: "EMERALD"
+    items: "EMERALD 2"
+    commands: []
+  '6':
+    title: "64x żelazo"
+    cost: 0.5
+    type: "IRON_INGOT"
+    items: "IRON_INGOT 64"
+    commands: []
+  '7':
+    title: "64x złota"
+    cost: 0.5
+    type: "GOLD_INGOT"
+    items: "GOLD_INGOT 64"
+    commands: []
+  '8':
+    title: "64x ziemii"
+    cost: 0.04
+    type: "DIRT"
+    items: "DIRT 64"
+    commands: []
+  '9':
+    title: "4x obsydianu"
+    cost: 2
+    type: "OBSIDIAN"
+    items: "OBSIDIAN 4"
+    commands: []
+  '10':
+    title: "8x deski"
+    cost: 0.10
+    type: "WOOD"
+    items: "WOOD 8"
+    commands: []

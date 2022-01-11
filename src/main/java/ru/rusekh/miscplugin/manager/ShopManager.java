@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import ru.rusekh.miscplugin.ToolsPlugin;
@@ -22,7 +23,9 @@ public class ShopManager
       String title = toolsPlugin.getConfig().getString(path + ".title");
       double cost = toolsPlugin.getConfig().getDouble(path + ".cost");
       Material material = Material.getMaterial(toolsPlugin.getConfig().getString(path + ".type"));
-      List<ItemStack> items = Collections.singletonList(toolsPlugin.getConfig().getItemStack(path + ".items"));
+      List<ItemStack> items = toolsPlugin.getConfig().getStringList(path + ".items").stream()
+          .map(this::deserializeItemStack)
+          .collect(Collectors.toList());
       List<String> commands = toolsPlugin.getConfig().getStringList(path + ".commands");
       shopSell.add(new Shop(title, cost, material, items, commands));
     }
@@ -31,9 +34,27 @@ public class ShopManager
       String title = toolsPlugin.getConfig().getString(path + ".title");
       double cost = toolsPlugin.getConfig().getDouble(path + ".cost");
       Material material = Material.getMaterial(toolsPlugin.getConfig().getString(path + ".type"));
-      List<ItemStack> items = Collections.singletonList(toolsPlugin.getConfig().getItemStack(path + ".items"));
+      List<ItemStack> items = toolsPlugin.getConfig().getStringList(path + ".items").stream()
+          .map(this::deserializeItemStack)
+          .collect(Collectors.toList());
       List<String> commands = toolsPlugin.getConfig().getStringList(path + ".commands");
       shopBuy.add(new Shop(title, cost, material, items, commands));
+    }
+  }
+
+  private ItemStack deserializeItemStack(String string) {
+    String material = string;
+    int amount = 1;
+    if(string.contains(" ")) {
+      amount = Integer.parseInt(string.split(" ")[1]);
+      material = string.split(" ")[0];
+    }
+
+    if(material.contains(":")) {
+      String[] split = material.split(":");
+      return new ItemStack(Material.getMaterial(split[0]), amount, Short.parseShort(split[1]));
+    } else {
+      return new ItemStack(Material.getMaterial(material), amount);
     }
   }
 

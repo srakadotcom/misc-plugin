@@ -49,11 +49,6 @@ public class ToolsPlugin extends JavaPlugin
   public void onEnable() {
     saveDefaultConfig();
 
-    if (getServer().getPluginManager().getPlugin("Vault") == null) {
-      System.out.println("NIE MASZ VAULTA CHUJU!");
-      Bukkit.getPluginManager().disablePlugin(this);
-    }
-
     RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
     if (rsp != null) {
       economy = rsp.getProvider();
