@@ -23,7 +23,7 @@ public class ShopManager
       String title = toolsPlugin.getConfig().getString(path + ".title");
       double cost = toolsPlugin.getConfig().getDouble(path + ".cost");
       Material material = Material.getMaterial(toolsPlugin.getConfig().getString(path + ".type"));
-      List<ItemStack> items = toolsPlugin.getConfig().getStringList(path + ".items").stream()
+      List<ItemStack> items = toolsPlugin.getConfig().getStringList(path + ".items").stream() //napraw to memexur
           .map(this::deserializeItemStack)
           .toList();
       List<String> commands = toolsPlugin.getConfig().getStringList(path + ".commands");

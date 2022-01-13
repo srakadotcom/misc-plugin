@@ -45,7 +45,7 @@ public class SellShopInventory implements ClickableInventory {
     Shop shop = toolsPlugin.getShopManager().getShopBuy().get(event.getRawSlot());
 
     if(!shop.sell(player)) {
-      player.sendMessage(ChatColor.RED + "Nie posiadasz wystarczajacych itemow do sprzedania!");
+      player.sendMessage(ChatColor.RED + "Nie posiadasz wystarczających itemów do sprzedania!");
       return;
     }
 
@@ -53,7 +53,7 @@ public class SellShopInventory implements ClickableInventory {
     if (response.type == ResponseType.FAILURE) {
       player.sendMessage(ChatColor.RED + "Transakcja nieudana: " + response.errorMessage);
     } else {
-      player.sendMessage(ChatColor.GREEN + "Pomyslnie sprzedales przedmiot!");
+      player.sendMessage(ChatColor.GREEN + "Pomyślnie sprzedałeś przedmiot!");
     }
   }
 }

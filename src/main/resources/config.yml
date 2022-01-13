@@ -1,34 +1,51 @@
 chat-format:
   default: "&7{PLAYER} &8» &f{MESSAGE}"
   VIP: "&6[VIP] &8ₓ &7{PLAYER} &8» &f{MESSAGE}"
-  SVIP: "&2[SVIP] &8ₓ &7{PLAYER} &8» &f{MESSAGE}"
+  grywacz: "&2[SVIP] &8ₓ &7{PLAYER} &8» &f{MESSAGE}"
   SPONSOR: "&1[SPONSOR] &8ₓ &7{PLAYER} &8» &f{MESSAGE}"
   elita: "&d[ELITA] &8ₓ &7{PLAYER} &8» &f{MESSAGE}"
   Bogacz: "&6&l[BOGACZ] &8ₓ &7{PLAYER} &8» &f{MESSAGE}"
   admin: "&c[Admin] &8ₓ &7{PLAYER} &8» &f{MESSAGE}"
-  root: "&4[Właściciel] &8ₓ &7{PLAYER} &8» &6{MESSAGE}"
+  owner: "&4[Właściciel] &8ₓ &7{PLAYER} &8» &6{MESSAGE}"
 
 messages:
   automsg:
     - "&8&m»                       «\n
-       &8● &aInformacja &8●\n
-       &7Na tym serwerze istnieje komenda &e/sklep\n
-       &7Wejdź i coś kup, albo sprzedaj :O"
+       &8● &aCashMiner.pl &8●\n
+       &7Czy wiesz, ze istnieje komenda &e/sklep\n
+       &7Możesz tam sprzedać i kupić np. klucze!\n
+       &8&m»                       «"
     - "&8&m»                       «\n
-       &8● &aInformacja &8●\n
-       &7Chcesz zobaczyć najlepszych graczy na serwerze?\n
-       &7Sprawdź to w komendzie &e/topki"
+       &8● &aCashMiner.pl &8●\n
+       &7Zobacz najbogatszych graczy na serwerze!\n
+       &7Wpisz &e/topki\n
+       &8&m»                       «"
     - "&8&m»                       «\n
-       &8● &aInformacja &8●\n
-       &7Nie zapomnij odebrać nagrody na serwerze!\n
-       &7Użyj komendy &e/discord &7aby dowiedzieć się więcej!"
+       &8● &aCashMiner.pl &8●\n
+       &7Możesz odebrać swoją nagrodę na serwerze!\n
+       &7Użyj komendy &e/discord &7aby dowiedzieć się więcej!\n
+       &8&m»                       «"
     - "&8&m»                       «\n
-       &8● &aInformacja &8●\n
-       &7Widzisz cheatera?\n
-       &7Zgłoś to administracji przez komendę &e/helpop!"
+       &8● &aCashMiner.pl &8●\n
+       &7Znalazłeś cheatera?\n
+       &7Zgłoś to administracji na discordzie lub pod komendą &e/helpop!\n
+       &8&m»                       «"
     - "&8&m»                       «\n
-       &8● &aInformacja &8●\n
-       &7Aktualna granica mapy wynosi &e2200x2200 kratek"
+       &8● &aCashMiner.pl &8●\n
+       &7Aktualna granica mapy wynosi &e2000x2000 kratek\n
+       &8&m»                       «"
+    - "&8&m»                       «\n
+      &8● &aCashMiner.pl &8●\n
+      &7Top 3 graczy, którzy wykopali najwięcej bloków na koniec edycji otrzymują nagrody:\n
+      &7TOP 1 - &ebrush 6x6\n
+      &7TOP 2 - &ebrush 5x5\n
+      &7TOP 3 - &ebrush 4x4\n
+      &6Wpisz &e/topki\n
+      &8&m»                       «"
+    - "&8&m»                       «\n
+      &8● &aCashMiner.pl &8●\n
+      &7Chcesz kopać szybciej i więcej? Zajrzyj na naszą stronę internetową &ehttps://cashminer.pl\n
+      &8&m»                       «"
 
 shopSell:
   '1':
@@ -46,8 +63,8 @@ shopSell:
   '3':
     title: "64x lazuryt"
     cost: 1
-    type: "INK_SACK:4"
-    items: "INK_SACK:4 64"
+    type: "LAPIS_ORE"
+    items: "LAPIS_ORE 64"
     commands: []
   '4':
     title: "4x diamenty"
@@ -109,8 +126,8 @@ shopBuy:
   '3':
     title: "64x lazuryt"
     cost: 2
-    type: "INK_SACK:4"
-    items: "INK_SACK:4 64"
+    type: "LAPIS_ORE"
+    items: "LAPIS_ORE 64"
     commands: []
   '4':
     title: "4x diamenty"
