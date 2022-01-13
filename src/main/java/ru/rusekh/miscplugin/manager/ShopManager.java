@@ -25,7 +25,7 @@ public class ShopManager
       Material material = Material.getMaterial(toolsPlugin.getConfig().getString(path + ".type"));
       List<ItemStack> items = toolsPlugin.getConfig().getStringList(path + ".items").stream()
           .map(this::deserializeItemStack)
-          .collect(Collectors.toList());
+          .toList();
       List<String> commands = toolsPlugin.getConfig().getStringList(path + ".commands");
       shopSell.add(new Shop(title, cost, material, items, commands));
     }
@@ -36,7 +36,7 @@ public class ShopManager
       Material material = Material.getMaterial(toolsPlugin.getConfig().getString(path + ".type"));
       List<ItemStack> items = toolsPlugin.getConfig().getStringList(path + ".items").stream()
           .map(this::deserializeItemStack)
-          .collect(Collectors.toList());
+          .toList();
       List<String> commands = toolsPlugin.getConfig().getStringList(path + ".commands");
       shopBuy.add(new Shop(title, cost, material, items, commands));
     }

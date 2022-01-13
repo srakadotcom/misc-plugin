@@ -4,6 +4,8 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -38,7 +40,7 @@ public class PlayerChatHandler implements Listener
     }
     Long lastMessage = cooldownChat.getIfPresent(player.getUniqueId());
     if (lastMessage != null && lastMessage >= System.currentTimeMillis()) {
-      ChatUtil.sendMessage(player, "&fNastępna wiadomość napiszesz za 5 sekund!");
+      ChatUtil.sendActionBar(player, "&cNastępna wiadomość napiszesz za 5 sekund!");
       event.setCancelled(true);
       return;
     }
