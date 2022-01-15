@@ -12,7 +12,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import ru.rusekh.miscplugin.util.ChatUtil;
 
-@CommandAlias("msg")
+@CommandAlias("msg|m|pm|tell")
 public class MessageCommand extends BaseCommand
 {
 
@@ -21,7 +21,7 @@ public class MessageCommand extends BaseCommand
   public boolean onCommand(@Optional CommandSender sender, @Optional String[] args) {
     Player player = (Player) sender;
     if (args.length < 2) {
-      ChatUtil.sendMessage(player, "&8>> &7Poprawne użycie: &f/msg <gracz>");
+      ChatUtil.sendMessage(player, "&8>> &7Poprawne użycie: &f/msg <gracz> <wiadomosc>");
       return false;
     }
     Player player2 = Bukkit.getPlayer(args[0]);
