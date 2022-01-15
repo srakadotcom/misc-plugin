@@ -90,6 +90,7 @@ public class ToolsPlugin extends JavaPlugin
     paperCommandManager.registerCommand(new KeyCommand());
     paperCommandManager.registerCommand(new CustomRanksCommands(this));
     paperCommandManager.registerCommand(new ShopCommand(this));
+    paperCommandManager.registerCommand(new HajsCommand(this), true);
 
     Bukkit.getScheduler().runTaskTimer(this, new AutoMessageTask(this), 20L, 800L);
 

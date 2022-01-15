@@ -24,7 +24,7 @@ dependencies {
     implementation "co.aikar:acf-paper:0.5.0-SNAPSHOT"
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
     implementation group: 'com.google.guava', name: 'guava', version: '31.0.1-jre'
-
+    compileOnly files("libs/cashblock-miners-1.0-SNAPSHOT-all.jar")
 }
 
 test {
