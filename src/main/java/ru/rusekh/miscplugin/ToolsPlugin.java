@@ -16,6 +16,7 @@ import ru.rusekh.miscplugin.commands.ChatCommand;
 import ru.rusekh.miscplugin.commands.CustomRanksCommands;
 import ru.rusekh.miscplugin.commands.EnderChestCommand;
 import ru.rusekh.miscplugin.commands.FlyCommand;
+import ru.rusekh.miscplugin.commands.HajsCommand;
 import ru.rusekh.miscplugin.commands.HatCommand;
 import ru.rusekh.miscplugin.commands.HelpCommand;
 import ru.rusekh.miscplugin.commands.HelpopCommand;
@@ -41,6 +42,7 @@ public class ToolsPlugin extends JavaPlugin
 {
   private final Map<UUID, UUID> teleportMap = new HashMap<>();
   private final Map<UUID, Location> cacheMap = new HashMap<>(); //mapa od back
+  private PaperCommandManager paperCommandManager;
   private static LuckPerms luckPermsApi;
   private ShopManager shopManager;
   private Economy economy;
@@ -69,7 +71,7 @@ public class ToolsPlugin extends JavaPlugin
 
     getCommand("reloadcfg").setExecutor(new ReloadCfgCommand(this));
 
-    PaperCommandManager paperCommandManager = new PaperCommandManager(this);
+    paperCommandManager = new PaperCommandManager(this);
     paperCommandManager.registerCommand(new EnderChestCommand());
     paperCommandManager.registerCommand(new VanishCommand());
     paperCommandManager.registerCommand(new FlyCommand());
@@ -92,6 +94,11 @@ public class ToolsPlugin extends JavaPlugin
     Bukkit.getScheduler().runTaskTimer(this, new AutoMessageTask(this), 20L, 800L);
 
     Logger.getLogger("misc-plugin").info("Successfully loaded a miscelanous");
+  }
+
+  @Override
+  public void onDisable() {
+    paperCommandManager.unregisterCommands();
   }
 
   public Map<UUID, UUID> getTeleportMap() {
