@@ -20,6 +20,7 @@ import ru.rusekh.miscplugin.commands.HajsCommand;
 import ru.rusekh.miscplugin.commands.HatCommand;
 import ru.rusekh.miscplugin.commands.HelpCommand;
 import ru.rusekh.miscplugin.commands.HelpopCommand;
+import ru.rusekh.miscplugin.commands.HomeCommand;
 import ru.rusekh.miscplugin.commands.KeyCommand;
 import ru.rusekh.miscplugin.commands.MessageCommand;
 import ru.rusekh.miscplugin.commands.RandomTeleportCommand;
@@ -91,6 +92,7 @@ public class ToolsPlugin extends JavaPlugin
     paperCommandManager.registerCommand(new CustomRanksCommands(this));
     paperCommandManager.registerCommand(new ShopCommand(this));
     paperCommandManager.registerCommand(new HajsCommand(this), true);
+    paperCommandManager.registerCommand(new HomeCommand(), true);
 
     Bukkit.getScheduler().runTaskTimer(this, new AutoMessageTask(this), 20L, 800L);
 
