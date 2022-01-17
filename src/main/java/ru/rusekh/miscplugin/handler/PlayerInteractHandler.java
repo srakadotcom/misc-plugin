@@ -39,8 +39,6 @@ public class PlayerInteractHandler implements Listener
     Block block = event.getBlock();
     if (RegionManager.build(player, block, false)) {
       event.setCancelled(true);
-    } else {
-      if (block.getType() == Material.ENCHANTMENT_TABLE) event.setCancelled(true); //blokujemy i tak dla enchanta bo tak mi sie podoba ic huj ci do tego
     }
   }
 
@@ -54,10 +52,10 @@ public class PlayerInteractHandler implements Listener
       Bukkit.dispatchCommand(event.getPlayer(), "rtp");
     }
     if (event.getClickedBlock().getType() == Material.ENCHANTMENT_TABLE) {
-      event.setCancelled(false);
+      event.setCancelled(true);
     }
     if (event.getClickedBlock().getType() == Material.ANVIL) {
-      event.setCancelled(false);
+      event.setCancelled(true);
     }
   }
 
