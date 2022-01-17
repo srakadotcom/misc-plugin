@@ -30,6 +30,7 @@ import ru.rusekh.miscplugin.commands.SpawnCommand;
 import ru.rusekh.miscplugin.commands.TpaCommand;
 import ru.rusekh.miscplugin.commands.TpacceptCommand;
 import ru.rusekh.miscplugin.commands.VanishCommand;
+import ru.rusekh.miscplugin.commands.WarpCommand;
 import ru.rusekh.miscplugin.commands.WorkbenchCommand;
 import ru.rusekh.miscplugin.commands.WyplacCommand;
 import ru.rusekh.miscplugin.handler.InventoryClickListener;
@@ -93,6 +94,7 @@ public class ToolsPlugin extends JavaPlugin
     paperCommandManager.registerCommand(new ShopCommand(this));
     paperCommandManager.registerCommand(new HajsCommand(this), true);
     paperCommandManager.registerCommand(new HomeCommand(), true);
+    paperCommandManager.registerCommand(new WarpCommand(), true);
 
     Bukkit.getScheduler().runTaskTimer(this, new AutoMessageTask(this), 20L, 800L);
 
