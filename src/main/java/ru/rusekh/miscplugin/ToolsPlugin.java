@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
-import net.luckperms.api.LuckPerms;
+import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -45,21 +45,27 @@ public class ToolsPlugin extends JavaPlugin
   private final Map<UUID, UUID> teleportMap = new HashMap<>();
   private final Map<UUID, Location> cacheMap = new HashMap<>(); //mapa od back
   private PaperCommandManager paperCommandManager;
-  private static LuckPerms luckPermsApi;
   private ShopManager shopManager;
   private Economy economy;
+  private Chat chat;
 
   @Override
   public void onEnable() {
     saveDefaultConfig();
 
-    RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-    if (rsp != null) {
-      economy = rsp.getProvider();
+    {
+      RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager()
+          .getRegistration(Economy.class);
+      if (rsp != null) {
+        economy = rsp.getProvider();
+      }
     }
-    RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
-    if (provider != null) {
-      luckPermsApi = provider.getProvider();
+    {
+      RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager()
+          .getRegistration(Chat.class);
+      if (rsp != null) {
+        chat = rsp.getProvider();
+      }
     }
 
     shopManager = new ShopManager(this);
@@ -114,15 +120,15 @@ public class ToolsPlugin extends JavaPlugin
     return cacheMap;
   }
 
-  public static LuckPerms getLuckPermsApi() {
-    return luckPermsApi;
-  }
-
   public ShopManager getShopManager() {
     return shopManager;
   }
 
   public Economy getEconomy() {
     return economy;
+  }
+
+  public Chat getChat() {
+    return chat;
   }
 }
