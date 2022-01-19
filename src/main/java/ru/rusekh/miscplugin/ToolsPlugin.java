@@ -1,6 +1,8 @@
 package ru.rusekh.miscplugin;
 
 import co.aikar.commands.PaperCommandManager;
+import com.zaxxer.hikari.HikariDataSource;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -12,6 +14,7 @@ import org.bukkit.Location;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import pl.memexurer.srakadb.sql.DatabaseTransactionError;
 import ru.rusekh.miscplugin.commands.ChatCommand;
 import ru.rusekh.miscplugin.commands.CustomRanksCommands;
 import ru.rusekh.miscplugin.commands.EnderChestCommand;
@@ -33,6 +36,7 @@ import ru.rusekh.miscplugin.commands.VanishCommand;
 import ru.rusekh.miscplugin.commands.WarpCommand;
 import ru.rusekh.miscplugin.commands.WorkbenchCommand;
 import ru.rusekh.miscplugin.commands.WyplacCommand;
+import ru.rusekh.miscplugin.data.UserRepository;
 import ru.rusekh.miscplugin.handler.InventoryClickListener;
 import ru.rusekh.miscplugin.handler.PlayerChatHandler;
 import ru.rusekh.miscplugin.handler.PlayerInteractHandler;
@@ -40,18 +44,43 @@ import ru.rusekh.miscplugin.handler.PlayerJoinHandler;
 import ru.rusekh.miscplugin.manager.ShopManager;
 import ru.rusekh.miscplugin.task.AutoMessageTask;
 
-public class ToolsPlugin extends JavaPlugin
-{
+public class ToolsPlugin extends JavaPlugin {
+
   private final Map<UUID, UUID> teleportMap = new HashMap<>();
   private final Map<UUID, Location> cacheMap = new HashMap<>(); //mapa od back
   private PaperCommandManager paperCommandManager;
   private ShopManager shopManager;
   private Economy economy;
   private Chat chat;
+  private HikariDataSource dataSource;
+  private UserRepository repository;
+  private boolean isDataSourceStolen;
 
   @Override
   public void onEnable() {
     saveDefaultConfig();
+
+    RegisteredServiceProvider<HikariDataSource> dataSourceProvider = getServer().getServicesManager()
+        .getRegistration(HikariDataSource.class);
+    if (dataSourceProvider != null) {
+      dataSource = dataSourceProvider.getProvider();
+      isDataSourceStolen = true;
+      getLogger().info(
+          "Uzyto gotowego polaczenia z baza danych od pluginu " + dataSourceProvider.getPlugin()
+              .getName());
+      try {
+        this.repository = new UserRepository(this, dataSource.getConnection());
+      } catch (SQLException error) {
+        error.printStackTrace();
+        getLogger().severe("Wystapil blad przy tworzeniu tabeli. Wylaczanie pluginu...");
+        getServer().getPluginManager().disablePlugin(this);
+        return;
+      }
+    } else {
+      getLogger().severe("Nie znaleziono gotowego polaczenia z baza danych. Wylaczanie pluginu...");
+      getServer().getPluginManager().disablePlugin(this);
+      return;
+    }
 
     {
       RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager()
@@ -76,7 +105,6 @@ public class ToolsPlugin extends JavaPlugin
     pluginManager.registerEvents(new PlayerChatHandler(this), this);
     pluginManager.registerEvents(new InventoryClickListener(), this);
 
-
     getCommand("reloadcfg").setExecutor(new ReloadCfgCommand(this));
 
     paperCommandManager = new PaperCommandManager(this);
@@ -99,7 +127,7 @@ public class ToolsPlugin extends JavaPlugin
     paperCommandManager.registerCommand(new CustomRanksCommands(this));
     paperCommandManager.registerCommand(new ShopCommand(this));
     paperCommandManager.registerCommand(new HajsCommand(this), true);
-    paperCommandManager.registerCommand(new HomeCommand(), true);
+    paperCommandManager.registerCommand(new HomeCommand(repository), true);
     paperCommandManager.registerCommand(new WarpCommand(), true);
 
     Bukkit.getScheduler().runTaskTimer(this, new AutoMessageTask(this), 20L, 800L);
@@ -109,8 +137,12 @@ public class ToolsPlugin extends JavaPlugin
 
   @Override
   public void onDisable() {
+    if (!isDataSourceStolen) {
+      dataSource.close();
+    }
     paperCommandManager.unregisterCommands();
   }
+
 
   public Map<UUID, UUID> getTeleportMap() {
     return teleportMap;

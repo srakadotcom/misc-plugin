@@ -14,13 +14,18 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import ru.rusekh.miscplugin.data.PlayerHomes;
+import ru.rusekh.miscplugin.data.UserRepository;
 import ru.rusekh.miscplugin.inventory.ClickableInventory;
 import ru.rusekh.miscplugin.util.ItemBuilder;
 
 @CommandAlias("home|domek|homes")
 public class HomeCommand extends BaseCommand {
 
-  private final PlayerHomes homes = new PlayerHomes();
+  private final UserRepository repository;
+
+  public HomeCommand(UserRepository repository) {
+    this.repository = repository;
+  }
 
   private static int getHomeLimit(Player player) {
     if (player.hasPermission("homes.svip")) {
@@ -34,31 +39,54 @@ public class HomeCommand extends BaseCommand {
 
   @Default
   public void showMenu(Player sender, @Optional Integer home) {
-    if (home == null) {
-      sender.openInventory(new HomeInventory(sender, homes).getInventory());
-      return;
-    }
+    repository.fetchOrCreateModel(sender.getUniqueId()).whenComplete(
+        (dataModel, throwable) -> {
+          if (throwable != null) {
+            throwable.printStackTrace();
+            sender.sendMessage(ChatColor.RED + "Error kurwo: " + throwable.getMessage());
+            return;
+          }
 
-    if (!homes.hasHome(home)) {
-      throw new InvalidCommandArgument("Nie znaleziono domku!", false);
-    }
+          if (home == null) {
+            sender.openInventory(new HomeInventory(sender, dataModel.getHomes()).getInventory());
+            return;
+          }
 
-    sender.teleport(homes.getHome(home));
-    sender.sendMessage(ChatColor.GREEN + "Przeteleportowano!");
+          if (!dataModel.getHomes().hasHome(home)) {
+            throw new InvalidCommandArgument("Nie znaleziono domku!", false);
+          }
+
+          sender.teleport(dataModel.getHomes().getHome(home));
+          sender.sendMessage(ChatColor.GREEN + "Przeteleportowano!");
+        });
   }
 
   @CommandAlias("sethome|ustawhome|ustawdomek|setdomek")
   @Subcommand("set|ustaw")
   public void setHome(Player sender, @Optional Integer home) {
-    if (home == null || !homes.createHome(sender.getLocation(), getHomeLimit(sender))) {
-      throw new InvalidCommandArgument(
-          "Osiagnieto limit domkow! Uzyj komendy /sethome (numer) aby zmienic lokalizacje istniejacego domku.", false);
-    }
+    repository.fetchOrCreateModel(sender.getUniqueId()).whenComplete(
+        (dataModel, throwable) -> {
+          if (home == null || !dataModel.getHomes()
+              .createHome(sender.getLocation(), getHomeLimit(sender))) {
+            throw new InvalidCommandArgument(
+                "Osiagnieto limit domkow! Uzyj komendy /sethome (numer) aby zmienic lokalizacje istniejacego domku.",
+                false);
+          }
 
-    if (!homes.setHome(sender.getLocation(), home)) {
-      throw new InvalidCommandArgument("Nie znaleziono takiego domku.", false);
-    }
-    sender.sendMessage(ChatColor.GREEN + "Pomyslnie ustawiono domek!");
+          if (!dataModel.getHomes().setHome(sender.getLocation(), home)) {
+            throw new InvalidCommandArgument("Nie znaleziono takiego domku.", false);
+          }
+
+          repository.updateDataModelAsync(dataModel).whenComplete(
+              (unused, throwable1) -> {
+                if (throwable1 != null) {
+                  throwable1.printStackTrace();
+                  sender.sendMessage(ChatColor.RED + "Error kurwo: " + throwable1.getMessage());
+                } else {
+                  sender.sendMessage(ChatColor.GREEN + "Pomyslnie ustawiono domek!");
+                }
+              });
+        });
   }
 
   private static class HomeInventory implements ClickableInventory {
@@ -96,7 +124,7 @@ public class HomeCommand extends BaseCommand {
               + " &7ustawiony.")
           .setSkullUrl(
               homes.hasHome(2) ? "5496c162d7c9e1bc8cf363f1bfa6f4b2ee5dec6226c228f52eb65d96a4635c" :
-              "b13b778c6e5128024214f859b4fadc7738c7be367ee4b9b8dbad7954cff3a")
+                  "b13b778c6e5128024214f859b4fadc7738c7be367ee4b9b8dbad7954cff3a")
           .build());
       inventory.setItem(3, new ItemBuilder(Material.SKULL_ITEM, 1, (short) 3)
           .setName("&7Domek 3")
@@ -111,8 +139,8 @@ public class HomeCommand extends BaseCommand {
 
     @Override
     public void handleClick(InventoryClickEvent event) {
-      if(event.getRawSlot() >= 1 && event.getRawSlot() <= 3) {
-        if(!homes.hasHome(event.getRawSlot())) {
+      if (event.getRawSlot() >= 1 && event.getRawSlot() <= 3) {
+        if (!homes.hasHome(event.getRawSlot())) {
           event.getWhoClicked().sendMessage(ChatColor.RED + "Ten domek nie jest ustawiony!");
           event.getWhoClicked().closeInventory();
           return;

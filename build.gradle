@@ -20,10 +20,17 @@ repositories {
 
 dependencies {
     compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
+    implementation('pl.memexurer:database-sraka:2.1.1-SNAPSHOT') {
+        exclude group: 'com.zaxxer', module: 'HikariCP'
+    }
     implementation "co.aikar:acf-paper:0.5.0-SNAPSHOT"
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
-    implementation group: 'com.google.guava', name: 'guava', version: '31.0.1-jre'
+    compileOnly group: 'com.google.guava', name: 'guava', version: '31.0.1-jre'
     compileOnly files("libs/cashblock-miners-1.0-SNAPSHOT-all.jar")
+}
+
+shadowJar {
+    relocate 'pl.memexurer.srakadb.sql', 'pl.rusekh.miscplugin.srakadb'
 }
 
 test {

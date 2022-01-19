@@ -3,7 +3,7 @@ main: ru.rusekh.miscplugin.ToolsPlugin
 author: rusekh
 version: 1.0-SNAPSHOT
 depend:
-  - LuckPerms
+  - CashblockMiners
 
 commands:
   reloadcfg:
