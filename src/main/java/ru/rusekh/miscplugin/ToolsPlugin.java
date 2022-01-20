@@ -17,6 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.memexurer.srakadb.sql.DatabaseTransactionError;
 import ru.rusekh.miscplugin.commands.ChatCommand;
 import ru.rusekh.miscplugin.commands.CustomRanksCommands;
+import ru.rusekh.miscplugin.commands.DiscordCommand;
 import ru.rusekh.miscplugin.commands.EnderChestCommand;
 import ru.rusekh.miscplugin.commands.FlyCommand;
 import ru.rusekh.miscplugin.commands.HajsCommand;
@@ -37,6 +38,7 @@ import ru.rusekh.miscplugin.commands.WarpCommand;
 import ru.rusekh.miscplugin.commands.WorkbenchCommand;
 import ru.rusekh.miscplugin.commands.WyplacCommand;
 import ru.rusekh.miscplugin.data.UserRepository;
+import ru.rusekh.miscplugin.data.discord.DiscordUserRepository;
 import ru.rusekh.miscplugin.handler.InventoryClickListener;
 import ru.rusekh.miscplugin.handler.PlayerChatHandler;
 import ru.rusekh.miscplugin.handler.PlayerInteractHandler;
@@ -53,7 +55,6 @@ public class ToolsPlugin extends JavaPlugin {
   private Economy economy;
   private Chat chat;
   private HikariDataSource dataSource;
-  private UserRepository repository;
   private boolean isDataSourceStolen;
 
   @Override
@@ -62,6 +63,8 @@ public class ToolsPlugin extends JavaPlugin {
 
     RegisteredServiceProvider<HikariDataSource> dataSourceProvider = getServer().getServicesManager()
         .getRegistration(HikariDataSource.class);
+    UserRepository repository;
+    DiscordUserRepository discordUserRepository;
     if (dataSourceProvider != null) {
       dataSource = dataSourceProvider.getProvider();
       isDataSourceStolen = true;
@@ -69,7 +72,8 @@ public class ToolsPlugin extends JavaPlugin {
           "Uzyto gotowego polaczenia z baza danych od pluginu " + dataSourceProvider.getPlugin()
               .getName());
       try {
-        this.repository = new UserRepository(this, dataSource.getConnection());
+        repository = new UserRepository(this, dataSource.getConnection());
+        discordUserRepository = new DiscordUserRepository(this, dataSource.getConnection());
       } catch (SQLException error) {
         error.printStackTrace();
         getLogger().severe("Wystapil blad przy tworzeniu tabeli. Wylaczanie pluginu...");
@@ -129,7 +133,7 @@ public class ToolsPlugin extends JavaPlugin {
     paperCommandManager.registerCommand(new HajsCommand(this), true);
     paperCommandManager.registerCommand(new HomeCommand(repository), true);
     paperCommandManager.registerCommand(new WarpCommand(), true);
-
+    paperCommandManager.registerCommand(new DiscordCommand(discordUserRepository), true);
     Bukkit.getScheduler().runTaskTimer(this, new AutoMessageTask(this), 20L, 800L);
 
     Logger.getLogger("misc-plugin").info("Successfully loaded a miscelanous");
