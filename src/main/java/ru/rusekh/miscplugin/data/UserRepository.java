@@ -1,5 +1,6 @@
 package ru.rusekh.miscplugin.data;
 
+import com.zaxxer.hikari.HikariDataSource;
 import java.sql.Connection;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -11,13 +12,14 @@ import pl.memexurer.srakadb.sql.table.query.DatabaseInsertQuery.UpdateType;
 
 public class UserRepository {
 
-  private final DatabaseTable<UserDataModel> databaseTable = new DatabaseTable<>("cqdVBhPp_xk",
-      UserDataModel.class);
+  private final DatabaseTable<UserDataModel> databaseTable;
   private final Plugin plugin;
 
-  public UserRepository(Plugin plugin, Connection connection) {
+  public UserRepository(Plugin plugin, HikariDataSource dataSource) {
     this.plugin = plugin;
-    this.databaseTable.initializeTable(connection);
+    this.databaseTable = new DatabaseTable<>("cqdVBhPp_xk", dataSource,
+        UserDataModel.class);
+    this.databaseTable.initializeTable();
   }
 
   public CompletableFuture<UserDataModel> fetchOrCreateModel(UUID uuid) {
@@ -48,16 +50,14 @@ public class UserRepository {
   }
 
   private UserDataModel fetchDataModel(UUID uuid) {
-    try (var transaction = new DatabaseFetchQuery()
+    return new DatabaseFetchQuery()
         .precondition(databaseTable.getModelMapper().createQueryPair("uuid", uuid))
-        .executeFetchQuery(databaseTable)) {
-      return transaction.readResult();
-    }
+        .executeFetchQuerySingle(databaseTable).orElse(null);
   }
 
   private void updateDataModel(UserDataModel dataModel) {
     new DatabaseInsertQuery(UpdateType.REPLACE)
         .values(databaseTable.getModelMapper().createQueryPairs(dataModel))
-        .execute(databaseTable).close();
+        .execute(databaseTable);
   }
 }

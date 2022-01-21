@@ -20,7 +20,7 @@ repositories {
 
 dependencies {
     compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
-    implementation('pl.memexurer:database-sraka:2.1.1-SNAPSHOT') {
+    implementation('pl.memexurer:database-sraka:2.2-SNAPSHOT') {
         exclude group: 'com.zaxxer', module: 'HikariCP'
     }
     implementation "co.aikar:acf-paper:0.5.0-SNAPSHOT"

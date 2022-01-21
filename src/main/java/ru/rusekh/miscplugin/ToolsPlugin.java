@@ -14,7 +14,7 @@ import org.bukkit.Location;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import pl.memexurer.srakadb.sql.DatabaseTransactionError;
+import pl.memexurer.srakadb.sql.table.transaction.DatabaseTransactionError;
 import ru.rusekh.miscplugin.commands.ChatCommand;
 import ru.rusekh.miscplugin.commands.CustomRanksCommands;
 import ru.rusekh.miscplugin.commands.DiscordCommand;
@@ -72,10 +72,10 @@ public class ToolsPlugin extends JavaPlugin {
           "Uzyto gotowego polaczenia z baza danych od pluginu " + dataSourceProvider.getPlugin()
               .getName());
       try {
-        repository = new UserRepository(this, dataSource.getConnection());
-        discordUserRepository = new DiscordUserRepository(this, dataSource.getConnection());
-      } catch (SQLException error) {
-        error.printStackTrace();
+        repository = new UserRepository(this, dataSource);
+        discordUserRepository = new DiscordUserRepository(this, dataSource);
+      } catch (DatabaseTransactionError error) {
+        error.getCause().printStackTrace();
         getLogger().severe("Wystapil blad przy tworzeniu tabeli. Wylaczanie pluginu...");
         getServer().getPluginManager().disablePlugin(this);
         return;

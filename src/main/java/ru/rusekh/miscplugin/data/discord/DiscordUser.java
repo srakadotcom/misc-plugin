@@ -20,6 +20,9 @@ public class DiscordUser {
     this.name = name;
   }
 
+  private DiscordUser() {
+  }
+
   public UUID getUuid() {
     return uuid;
   }

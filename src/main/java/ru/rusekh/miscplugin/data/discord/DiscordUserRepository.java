@@ -1,6 +1,6 @@
 package ru.rusekh.miscplugin.data.discord;
 
-import java.sql.Connection;
+import com.zaxxer.hikari.HikariDataSource;
 import java.sql.SQLException;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -13,13 +13,15 @@ import pl.memexurer.srakadb.sql.table.query.DatabaseInsertQuery.UpdateType;
 import pl.memexurer.srakadb.sql.table.transaction.DatabaseTransactionError;
 
 public class DiscordUserRepository {
-  private final DatabaseTable<DiscordUser> databaseTable = new DatabaseTable<>("1jw293wnk5il632wemiTPJ",
-      DiscordUser.class);
+
+  private final DatabaseTable<DiscordUser> databaseTable;
   private final Plugin plugin;
 
-  public DiscordUserRepository(Plugin plugin, Connection connection) {
+  public DiscordUserRepository(Plugin plugin, HikariDataSource dataSource) {
     this.plugin = plugin;
-    this.databaseTable.initializeTable(connection);
+    this.databaseTable = new DatabaseTable<>("1jw293wnk5il632wemiTPJ", dataSource,
+        DiscordUser.class);
+    this.databaseTable.initializeTable();
   }
 
   public CompletableFuture<DiscordUser> fetchModel(UUID uuid) {
@@ -52,7 +54,8 @@ public class DiscordUserRepository {
     CompletableFuture<Boolean> future = new CompletableFuture<>();
     plugin.getServer().getScheduler().runTask(plugin, () -> {
       try {
-        future.complete(insertDataModel(new DiscordUser(player.getUniqueId(), id, player.getName())));
+        future.complete(
+            insertDataModel(new DiscordUser(player.getUniqueId(), id, player.getName())));
       } catch (Exception ex) {
         ex.printStackTrace();
         future.completeExceptionally(ex);
@@ -62,31 +65,29 @@ public class DiscordUserRepository {
   }
 
   private DiscordUser fetchDataModel(UUID uuid) {
-    try (var transaction = new DatabaseFetchQuery()
+    return new DatabaseFetchQuery()
         .precondition(databaseTable.getModelMapper().createQueryPair("uuid", uuid))
-        .executeFetchQuery(databaseTable)) {
-      return transaction.readResult();
-    }
+        .executeFetchQuerySingle(databaseTable).orElse(null);
   }
 
   private DiscordUser fetchDataModelId(String id) {
-    try (var transaction = new DatabaseFetchQuery()
+    return new DatabaseFetchQuery()
         .precondition(databaseTable.getModelMapper().createQueryPair("id", id))
-        .executeFetchQuery(databaseTable)) {
-      return transaction.readResult();
-    }
+        .executeFetchQuerySingle(databaseTable).orElse(null);
   }
 
   private boolean insertDataModel(DiscordUser dataModel) {
     try {
       new DatabaseInsertQuery(UpdateType.INSERT)
           .values(databaseTable.getModelMapper().createQueryPairs(dataModel))
-          .execute(databaseTable).close();
+          .execute(databaseTable);
     } catch (DatabaseTransactionError e) {
-      if(e.getCause() instanceof SQLException && ((SQLException) e.getCause()).getErrorCode() == 2627)
+      if (e.getCause() instanceof SQLException
+          && ((SQLException) e.getCause()).getErrorCode() == 1062) {
         return true;
-      else
+      } else {
         throw e;
+      }
     }
     return false;
   }

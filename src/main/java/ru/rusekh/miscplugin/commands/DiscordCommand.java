@@ -1,6 +1,7 @@
 package ru.rusekh.miscplugin.commands;
 
 import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
@@ -15,6 +16,7 @@ import org.bukkit.command.RemoteConsoleCommandSender;
 import org.bukkit.entity.Player;
 import ru.rusekh.miscplugin.data.discord.DiscordUserRepository;
 
+@CommandAlias("discord")
 public class DiscordCommand extends BaseCommand {
 
   private final Map<String, String> discords = new HashMap<>();
