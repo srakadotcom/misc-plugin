@@ -31,6 +31,8 @@ public class PlayerChatHandler implements Listener
   public void onPlayerChat(AsyncPlayerChatEvent event) {
     Player player = event.getPlayer();
     String group = toolsPlugin.getChat().getPrimaryGroup(player);
+    if(group == null)
+      group = "default";
     if (!ChatCommand.chatStatus) if (!player.hasPermission("miscplugin.chat")) event.setCancelled(true);
     if (player.hasPermission("miscplugin.chat")) {
       event.setFormat(ChatColor.translateAlternateColorCodes('&', toolsPlugin.getConfig().getString("chat-format." + group)
