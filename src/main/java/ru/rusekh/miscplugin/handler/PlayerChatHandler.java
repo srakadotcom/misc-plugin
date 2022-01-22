@@ -4,6 +4,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -42,6 +43,10 @@ public class PlayerChatHandler implements Listener {
       return;
     }
 
+    if(event.getPlayer().hasPermission("miscplugin.chat")) {
+      event.setMessage(ChatUtil.color(event.getMessage()));
+    }
+
     cooldownChat.put(player.getUniqueId(),
         System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(5L));
   }
@@ -49,12 +54,18 @@ public class PlayerChatHandler implements Listener {
   @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
   public void onChatSetting(AsyncPlayerChatEvent event) {
     event.setCancelled(true);
-    toolsPlugin.getSettingManager().broadcast(
-        event.getPlayer(),
-        ChatUtil.color(toolsPlugin.getConfig()
-                .getString("chat-format." + (toolsPlugin.getChat() == null ? "default"
-                    : toolsPlugin.getChat().getPrimaryGroup(event.getPlayer()))))
-            .replace("{PLAYER}", event.getPlayer().getName())
-            .replace("{MESSAGE}", event.getMessage()), ChatMessageType.CHAT_MESSAGES);
+
+    String message =   ChatUtil.color(toolsPlugin.getConfig()
+            .getString("chat-format." + (toolsPlugin.getChat() == null ? "default"
+                : toolsPlugin.getChat().getPrimaryGroup(event.getPlayer()))))
+        .replace("{PLAYER}", event.getPlayer().getName())
+        .replace("{MESSAGE}", event.getMessage());
+
+    if(event.getPlayer().hasPermission("miscplugin.chat")) {
+      Bukkit.broadcastMessage(message);
+    } else {
+      toolsPlugin.getSettingManager().broadcast(
+          event.getPlayer(), message, ChatMessageType.CHAT_MESSAGES);
+    }
   }
 }
