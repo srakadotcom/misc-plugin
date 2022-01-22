@@ -51,7 +51,7 @@ public class UserRepository {
 
   private UserDataModel fetchDataModel(UUID uuid) {
     return new DatabaseFetchQuery()
-        .precondition(databaseTable.getModelMapper().createQueryPair("uuid", uuid))
+        .and(databaseTable.getModelMapper().createQueryPair("uuid", uuid))
         .executeFetchQuerySingle(databaseTable).orElse(null);
   }
 

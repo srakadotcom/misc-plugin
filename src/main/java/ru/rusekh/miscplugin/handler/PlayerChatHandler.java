@@ -4,19 +4,18 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.BaseComponent;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import ru.rusekh.miscplugin.ToolsPlugin;
 import ru.rusekh.miscplugin.commands.ChatCommand;
+import ru.rusekh.miscplugin.data.chat.ChatMessageType;
 import ru.rusekh.miscplugin.util.ChatUtil;
 
-public class PlayerChatHandler implements Listener
-{
+public class PlayerChatHandler implements Listener {
+
   private final Cache<UUID, Long> cooldownChat = CacheBuilder.newBuilder()
       .expireAfterWrite(5, TimeUnit.SECONDS)
       .build();
@@ -30,25 +29,32 @@ public class PlayerChatHandler implements Listener
   @EventHandler
   public void onPlayerChat(AsyncPlayerChatEvent event) {
     Player player = event.getPlayer();
-    String group = toolsPlugin.getChat().getPrimaryGroup(player);
-    if(group == null)
-      group = "default";
-    if (!ChatCommand.chatStatus) if (!player.hasPermission("miscplugin.chat")) event.setCancelled(true);
-    if (player.hasPermission("miscplugin.chat")) {
-      event.setFormat(ChatColor.translateAlternateColorCodes('&', toolsPlugin.getConfig().getString("chat-format." + group)
-          .replace("{PLAYER}", player.getName())
-          .replace("{MESSAGE}", "%2$s")));
+    if (!ChatCommand.chatStatus && !player.hasPermission("miscplugin.chat")) {
+      event.setCancelled(true);
       return;
     }
+
     Long lastMessage = cooldownChat.getIfPresent(player.getUniqueId());
-    if (lastMessage != null && lastMessage >= System.currentTimeMillis()) {
+    if (!player.hasPermission("miscplugin.chat") && lastMessage != null
+        && lastMessage >= System.currentTimeMillis()) {
       ChatUtil.sendActionBar(player, "&cNastępna wiadomość napiszesz za 5 sekund!");
       event.setCancelled(true);
       return;
     }
-    cooldownChat.put(player.getUniqueId(), System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(5L));
-    event.setFormat(ChatColor.translateAlternateColorCodes('&', toolsPlugin.getConfig().getString("chat-format." + group)
-          .replace("{PLAYER}", player.getName())
-          .replace("{MESSAGE}", "%2$s")));
+
+    cooldownChat.put(player.getUniqueId(),
+        System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(5L));
+  }
+
+  @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+  public void onChatSetting(AsyncPlayerChatEvent event) {
+    event.setCancelled(true);
+    toolsPlugin.getSettingManager().broadcast(
+        event.getPlayer(),
+        ChatUtil.color(toolsPlugin.getConfig()
+                .getString("chat-format." + (toolsPlugin.getChat() == null ? "default"
+                    : toolsPlugin.getChat().getPrimaryGroup(event.getPlayer()))))
+            .replace("{PLAYER}", event.getPlayer().getName())
+            .replace("{MESSAGE}", event.getMessage()), ChatMessageType.CHAT_MESSAGES);
   }
 }

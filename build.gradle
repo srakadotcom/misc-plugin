@@ -10,17 +10,32 @@ compileJava.options.encoding = 'UTF-8'
 
 repositories {
     mavenCentral()
-    mavenLocal()
+    mavenLocal() {
+        content {
+            includeGroup 'org.spigotmc'
+            includeGroup 'org.bukkit'
+        }
+    }
     maven {
         url = "https://oss.sonatype.org/content/repositories/snapshots/"
     }
     maven { url = "https://repo.aikar.co/content/groups/aikar/" }
     maven { url 'https://jitpack.io' }
+    maven {
+        url = uri("https://maven.pkg.github.com/playcastle-ru/database-sraka")
+        credentials {
+            username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+            password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+        }
+        content {
+            includeGroup 'pl.memexurer'
+        }
+    }
 }
 
 dependencies {
     compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
-    implementation('pl.memexurer:database-sraka:2.2-SNAPSHOT') {
+    implementation('pl.memexurer:database-sraka:2.3.1-SNAPSHOT') {
         exclude group: 'com.zaxxer', module: 'HikariCP'
     }
     implementation "co.aikar:acf-paper:0.5.0-SNAPSHOT"

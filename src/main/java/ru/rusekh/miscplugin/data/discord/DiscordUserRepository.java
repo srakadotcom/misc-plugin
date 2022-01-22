@@ -66,13 +66,13 @@ public class DiscordUserRepository {
 
   private DiscordUser fetchDataModel(UUID uuid) {
     return new DatabaseFetchQuery()
-        .precondition(databaseTable.getModelMapper().createQueryPair("uuid", uuid))
+        .and(databaseTable.getModelMapper().createQueryPair("uuid", uuid))
         .executeFetchQuerySingle(databaseTable).orElse(null);
   }
 
   private DiscordUser fetchDataModelId(String id) {
     return new DatabaseFetchQuery()
-        .precondition(databaseTable.getModelMapper().createQueryPair("id", id))
+        .and(databaseTable.getModelMapper().createQueryPair("id", id))
         .executeFetchQuerySingle(databaseTable).orElse(null);
   }
 

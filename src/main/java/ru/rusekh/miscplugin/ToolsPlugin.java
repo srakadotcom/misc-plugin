@@ -2,7 +2,6 @@ package ru.rusekh.miscplugin;
 
 import co.aikar.commands.PaperCommandManager;
 import com.zaxxer.hikari.HikariDataSource;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -16,6 +15,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.memexurer.srakadb.sql.table.transaction.DatabaseTransactionError;
 import ru.rusekh.miscplugin.commands.ChatCommand;
+import ru.rusekh.miscplugin.commands.ChatControlCommand;
 import ru.rusekh.miscplugin.commands.CustomRanksCommands;
 import ru.rusekh.miscplugin.commands.DiscordCommand;
 import ru.rusekh.miscplugin.commands.EnderChestCommand;
@@ -38,6 +38,7 @@ import ru.rusekh.miscplugin.commands.WarpCommand;
 import ru.rusekh.miscplugin.commands.WorkbenchCommand;
 import ru.rusekh.miscplugin.commands.WyplacCommand;
 import ru.rusekh.miscplugin.data.UserRepository;
+import ru.rusekh.miscplugin.data.chat.SettingManager;
 import ru.rusekh.miscplugin.data.discord.DiscordUserRepository;
 import ru.rusekh.miscplugin.handler.InventoryClickListener;
 import ru.rusekh.miscplugin.handler.PlayerChatHandler;
@@ -56,6 +57,7 @@ public class ToolsPlugin extends JavaPlugin {
   private Chat chat;
   private HikariDataSource dataSource;
   private boolean isDataSourceStolen;
+  private SettingManager settingManager;
 
   @Override
   public void onEnable() {
@@ -74,6 +76,7 @@ public class ToolsPlugin extends JavaPlugin {
       try {
         repository = new UserRepository(this, dataSource);
         discordUserRepository = new DiscordUserRepository(this, dataSource);
+        settingManager = new SettingManager(this, dataSource);
       } catch (DatabaseTransactionError error) {
         error.getCause().printStackTrace();
         getLogger().severe("Wystapil blad przy tworzeniu tabeli. Wylaczanie pluginu...");
@@ -134,6 +137,7 @@ public class ToolsPlugin extends JavaPlugin {
     paperCommandManager.registerCommand(new HomeCommand(repository), true);
     paperCommandManager.registerCommand(new WarpCommand(), true);
     paperCommandManager.registerCommand(new DiscordCommand(discordUserRepository), true);
+    paperCommandManager.registerCommand(new ChatControlCommand(settingManager), true);
     Bukkit.getScheduler().runTaskTimer(this, new AutoMessageTask(this), 20L, 800L);
 
     Logger.getLogger("misc-plugin").info("Successfully loaded a miscelanous");
@@ -147,6 +151,9 @@ public class ToolsPlugin extends JavaPlugin {
     paperCommandManager.unregisterCommands();
   }
 
+  public SettingManager getSettingManager() {
+    return settingManager;
+  }
 
   public Map<UUID, UUID> getTeleportMap() {
     return teleportMap;
@@ -166,5 +173,10 @@ public class ToolsPlugin extends JavaPlugin {
 
   public Chat getChat() {
     return chat;
+  }
+
+  @Deprecated
+  public static ToolsPlugin getInstance() {
+    return ToolsPlugin.getPlugin(ToolsPlugin.class);
   }
 }
