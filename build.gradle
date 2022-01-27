@@ -31,21 +31,30 @@ repositories {
             includeGroup 'pl.memexurer'
         }
     }
+    maven {
+        url = uri("https://maven.pkg.github.com/DevLeoko/AdvancedBan")
+        credentials {
+            username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+            password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+        }
+    }
+    maven {
+        name = "nexus"
+        url = "https://nexus.badbones69.com/repository/maven-releases/"
+    }
 }
 
 dependencies {
     compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
-    implementation('pl.memexurer:database-sraka:2.3.1-SNAPSHOT') {
+    implementation('pl.memexurer:database-sraka:2.3.3-SNAPSHOT') {
         exclude group: 'com.zaxxer', module: 'HikariCP'
     }
     implementation "co.aikar:acf-paper:0.5.0-SNAPSHOT"
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
     compileOnly group: 'com.google.guava', name: 'guava', version: '31.0.1-jre'
     compileOnly files("libs/cashblock-miners-1.0-SNAPSHOT-all.jar")
-}
-
-shadowJar {
-    relocate 'pl.memexurer.srakadb.sql', 'pl.rusekh.miscplugin.srakadb'
+    compileOnly 'me.leoko.advancedban:AdvancedBan:2.1.6'
+    compileOnly 'me.badbones69:crazycrates-plugin:1.10.2'
 }
 
 test {

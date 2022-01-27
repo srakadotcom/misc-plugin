@@ -10,12 +10,12 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import ru.rusekh.miscplugin.data.chat.ChatMessageType;
 import ru.rusekh.miscplugin.util.ChatUtil;
 
 @CommandAlias("msg|m|pm|tell")
 public class MessageCommand extends BaseCommand
 {
-
   @Default
   @CommandCompletion("@players")
   public boolean onCommand(@Optional CommandSender sender, @Optional String[] args) {
@@ -30,8 +30,8 @@ public class MessageCommand extends BaseCommand
       return false;
     }
     String message = ChatColor.stripColor(ChatUtil.color(StringUtils.join(args, " ", 1, args.length)));
-    ChatUtil.sendMessage(player, "&6Ja &8>> &6" + player2.getName() + "&8: &f" + message);
-    ChatUtil.sendMessage(player2, "&6" + player.getName() + " &8>> &6Ja&8: &f" + message);
+    ChatUtil.sendMessage(player, ChatMessageType.MSG_MESSAGES, "&6Ja &8>> &6" + player2.getName() + "&8: &f" + message);
+    ChatUtil.sendMessage(player2, ChatMessageType.MSG_MESSAGES, "&6" + player.getName() + " &8>> &6Ja&8: &f" + message);
     return false;
   }
 }

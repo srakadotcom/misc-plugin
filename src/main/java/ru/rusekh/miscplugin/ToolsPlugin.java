@@ -44,6 +44,7 @@ import ru.rusekh.miscplugin.handler.InventoryClickListener;
 import ru.rusekh.miscplugin.handler.PlayerChatHandler;
 import ru.rusekh.miscplugin.handler.PlayerInteractHandler;
 import ru.rusekh.miscplugin.handler.PlayerJoinHandler;
+import ru.rusekh.miscplugin.handler.PunishmentHandler;
 import ru.rusekh.miscplugin.manager.ShopManager;
 import ru.rusekh.miscplugin.task.AutoMessageTask;
 
@@ -111,6 +112,7 @@ public class ToolsPlugin extends JavaPlugin {
     pluginManager.registerEvents(new PlayerJoinHandler(), this);
     pluginManager.registerEvents(new PlayerChatHandler(this), this);
     pluginManager.registerEvents(new InventoryClickListener(), this);
+    pluginManager.registerEvents(new PunishmentHandler(), this);
 
     getCommand("reloadcfg").setExecutor(new ReloadCfgCommand(this));
 

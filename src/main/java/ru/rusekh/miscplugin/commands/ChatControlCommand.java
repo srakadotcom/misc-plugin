@@ -3,12 +3,12 @@ package ru.rusekh.miscplugin.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Default;
-import java.util.function.BiConsumer;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import ru.rusekh.miscplugin.data.chat.ChatMessageType;
+import ru.rusekh.miscplugin.ToolsPlugin;
 import ru.rusekh.miscplugin.data.chat.SettingDataModel;
 import ru.rusekh.miscplugin.data.chat.SettingManager;
+import ru.rusekh.miscplugin.inventory.ChatSettingInventory;
 
 @CommandAlias("chatcontrol|cc")
 public class ChatControlCommand extends BaseCommand {
@@ -34,19 +34,7 @@ public class ChatControlCommand extends BaseCommand {
             settingDataModel = new SettingDataModel(player.getUniqueId());
           }
 
-          if (settingDataModel.toggle(ChatMessageType.CHAT_MESSAGES)) {
-            player.sendMessage(ChatColor.GREEN + "Wlaczono chuja");
-          } else {
-            player.sendMessage(ChatColor.GREEN + "Wylaczono chuja");
-          }
-
-          manager.updateSettings(settingDataModel).whenComplete(
-              (unused, throwable1) -> {
-                if (throwable1 != null) {
-                  throwable1.printStackTrace();
-                  player.sendMessage(ChatColor.RED + "jednak nie, bo sie cos wyjebalo");
-                }
-              });
+          new ChatSettingInventory(manager, settingDataModel).openGui(player);
         });
   }
 }
