@@ -33,11 +33,11 @@ public class ChatUtil {
   }
 
   public static void broadcastMessage(ChatMessageType type, String message) {
-    ToolsPlugin.getInstance().getSettingManager().broadcast(message, type);
+    ToolsPlugin.getInstance().getSettingManager().broadcast(color(message), type);
   }
 
   public static void sendMessage(Player player, ChatMessageType type, String message) {
-    ToolsPlugin.getInstance().getSettingManager().sendMessage(player, message, type);
+    ToolsPlugin.getInstance().getSettingManager().sendMessage(player, color(message), type);
   }
 
   public static long fromTime(final long time) {
