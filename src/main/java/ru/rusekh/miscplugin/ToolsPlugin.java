@@ -40,6 +40,7 @@ import ru.rusekh.miscplugin.commands.WyplacCommand;
 import ru.rusekh.miscplugin.data.UserRepository;
 import ru.rusekh.miscplugin.data.chat.SettingManager;
 import ru.rusekh.miscplugin.data.discord.DiscordUserRepository;
+import ru.rusekh.miscplugin.handler.CrateHandler;
 import ru.rusekh.miscplugin.handler.InventoryClickListener;
 import ru.rusekh.miscplugin.handler.PlayerChatHandler;
 import ru.rusekh.miscplugin.handler.PlayerInteractHandler;
@@ -113,6 +114,7 @@ public class ToolsPlugin extends JavaPlugin {
     pluginManager.registerEvents(new PlayerChatHandler(this), this);
     pluginManager.registerEvents(new InventoryClickListener(), this);
     pluginManager.registerEvents(new PunishmentHandler(), this);
+    pluginManager.registerEvents(new CrateHandler(), this);
 
     getCommand("reloadcfg").setExecutor(new ReloadCfgCommand(this));
 

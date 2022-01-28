@@ -38,10 +38,6 @@ repositories {
             password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
         }
     }
-    maven {
-        name = "nexus"
-        url = "https://nexus.badbones69.com/repository/maven-releases/"
-    }
 }
 
 dependencies {
@@ -54,7 +50,7 @@ dependencies {
     compileOnly group: 'com.google.guava', name: 'guava', version: '31.0.1-jre'
     compileOnly files("libs/cashblock-miners-1.0-SNAPSHOT-all.jar")
     compileOnly 'me.leoko.advancedban:AdvancedBan:2.1.6'
-    compileOnly 'me.badbones69:crazycrates-plugin:1.10.2'
+    compileOnly files("libs/crazycrates.jar")
 }
 
 test {
