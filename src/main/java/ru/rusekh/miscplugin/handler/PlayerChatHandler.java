@@ -39,6 +39,7 @@ public class PlayerChatHandler implements Listener {
     if (!player.hasPermission("miscplugin.chat") && lastMessage != null
         && lastMessage >= System.currentTimeMillis()) {
       ChatUtil.sendActionBar(player, "&cNastępna wiadomość napiszesz za 5 sekund!");
+      ChatUtil.sendMessage(player,"&cNastępna wiadomość napiszesz za 5 sekund!");
       event.setCancelled(true);
       return;
     }
@@ -51,7 +52,7 @@ public class PlayerChatHandler implements Listener {
         System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(5L));
   }
 
-  @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onChatSetting(AsyncPlayerChatEvent event) {
     event.setCancelled(true);
 
